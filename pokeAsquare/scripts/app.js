@@ -41,14 +41,41 @@ console.log('Welcome to Poke-A-Square...');
 //difficulty: less time, more squares
 //
 
+
+//jason's code
+/* 
+const createSquares = function (n) {
+    const $squares = $('.squares');
+    const colors = ['red', 'blue', 'green', 'purple'];
+    for (let i = 0; i < n; i++) {
+        let $square = $('<div class="square"></div>');
+        const color = Math.floor(Math.random() * colors.length);
+        $square.css('width', '25px')
+            .css('height', '25px')
+            .css('background-color', colors[color])
+        $square.appendTo($squares);
+    }
+} */
+
+
+
+
+
+
 //1st thing do?
 //make a square...?
 //create gameboard div?
 //begin btn?
+const squareCount = 30;
+
+let round = 0;
+const timeSet = 3;
+$('#timer').text('timer: '+timeSet+"s");
 
 $('button').on('click', function(){
     console.log('===GAME START===');
-    createSquares(10);
+    setUpRound();
+    //console.log(applyRandomColor());
 })
 
 //next step?
@@ -60,9 +87,112 @@ $('button').on('click', function(){
 
 const createSquares = function(numSquares) {
     const holder = $('.squares');
+    holder.empty();
     for(i=0; i<numSquares; i++){
         const newSquare = $('<div/>').addClass('square');
+        newSquare.css('background-color', applyRandomColor());
+        //console.log(newSquare);
         holder.append(newSquare);
     }
 }
+
+//step 3
+const colors1 = ['blue', 'red', 'green', 'purple', 'orange', 'yellow']
+
+const applyRandomColor = function() {
+    x = Math.floor(colors1.length*Math.random());
+    return colors1[x];
+}
+
+//step 4
+//do a poke
+//add a listener (guess to above class?)
+//look at color
+
+let score1 = 0;
+
+const getPoked = function(event){
+    console.log('clicked!');
+    const color2 = $(event.target).css('background-color');
+    //console.log(color2);
+    if(color2==='rgb(0, 0, 255)'){
+        score1++;
+        //console.log(score1);
+    }
+    else if(color2==='rgb(128, 128, 128)'){
+        console.log('sorry grey');
+        return;
+    }
+    else{
+        console.log('miss!');
+        score1--;
+        //console.log(score1);
+    }
+    $(event.target).css('background-color', 'grey');
+    $(event.target).css('opacity', '0.5');
+    $('h1').text("Scoreboard: "+score1);
+}
+
+$('.squares').on('click', '.square', getPoked);
+
+
+
+//note: should name function outside
+//so can remove etc it later
+
+//note: dalton made a  clicked class
+//i just made the color grey
+
+
+
+//step 6
+//TIMER STUFF
+
+
+const setTimer = function(){
+    let time1 = timeSet;
+    const timer1 = setInterval(
+        function(){
+            if(time1 === 0){
+                clearInterval(timer1);
+                round++;
+                time1 = timeSet;
+                //setTimer();?? just keeps going...
+                if(round<4){
+                    setUpRound();
+                }
+                else{
+                    console.log('game over');
+                    $('.squares').empty();
+                }
+                
+            }
+            console.log(time1);
+            time1--;
+        },
+        1000
+    );
+}
+
+
+//step 7
+//setup round function
+//depending on round
+//generate squares
+
+const setUpRound = function() {
+    $('#round').text('round: '+(round+1));
+    $('.squares').empty();
+    setTimer();
+    if(round>3){
+        console.log('game over');
+        return;
+    }
+    else{
+        createSquares(25*(2**round));
+    }
+}
+
+//note
+//never updated timer or round variable
 
