@@ -1,6 +1,11 @@
 html, body {
   font-family: 'Open Sans', sans-serif;
 }
+
+.squares {
+  width: 50vh;
+}
+
 .squares div {
   width:  5vh;
   height: 5vh;
@@ -10,7 +15,7 @@ html, body {
 }
 
 header {
-  width: 100%;
+  width: 50%;
   display: block;
   height: 100px;
   background-color: pink;
